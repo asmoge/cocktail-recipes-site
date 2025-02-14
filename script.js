@@ -24,8 +24,8 @@ async function fetchCocktails() {
             link: row.c[39]?.v || "",                // Link (if available)
             picture: row.c[40]?.v || ""              // Picture (if available)
         }));
-	console.log("Fetched Cocktails:", cocktails);
-
+        
+        console.log("Fetched Cocktails:", cocktails);
         displayCocktails(cocktails);
     } catch (error) {
         console.error("Error fetching data:", error);
@@ -44,4 +44,30 @@ function extractIngredients(row) {
     return ingredients.length > 0 ? ingredients.join(", ") : "No ingredients listed.";
 }
 
-// Function to
+// Function to display cocktails on the webpage
+function displayCocktails(cocktails) {
+    console.log("Displaying Cocktails:", cocktails);
+    const listDiv = document.getElementById("cocktailList");
+
+    // Ensure the div exists in index.html
+    if (!listDiv) {
+        console.error("Error: 'cocktailList' div not found in HTML.");
+        return;
+    }
+
+    listDiv.innerHTML = "<h2>Available Cocktails</h2>";
+
+    cocktails.forEach(cocktail => {
+        listDiv.innerHTML += `
+            <p><strong>${cocktail.name}</strong> - ${cocktail.style}</p>
+            <p>Last Had: ${cocktail.lastHad} | Rating: ${cocktail.rating}</p>
+            <p>Ingredients: ${cocktail.ingredients}</p>
+            <p>Instructions: ${cocktail.instructions}</p>
+            <p>Glassware: ${cocktail.glassware} | Garnish: ${cocktail.garnish}</p>
+            <hr>
+        `;
+    });
+}
+
+// Call fetchCocktails when the page loads
+document.addEventListener("DOMContentLoaded", fetchCocktails);
