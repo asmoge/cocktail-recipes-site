@@ -31,38 +31,16 @@ async function fetchCocktails() {
     }
 }
 
-// Function to extract ingredients and amounts
+// Function to extract ingredients and amounts, while filtering out "Yes" and "No"
 function extractIngredients(row) {
     let ingredients = [];
     for (let i = 11; i <= 31; i += 3) { // Ingredients start at column 11, every 3rd column contains the next ingredient
-        if (row.c[i] && row.c[i].v) {
+        if (row.c[i] && row.c[i].v && row.c[i].v !== "Yes" && row.c[i].v !== "No") {
             let amount = row.c[i + 1]?.v || "";
-            ingredients.push(`${row.c[i].v} (${amount})`);
+            ingredients.push(`${row.c[i].v} ${amount}`.trim());
         }
     }
     return ingredients.length > 0 ? ingredients.join(", ") : "No ingredients listed.";
 }
 
-// Function to display cocktails
-function displayCocktails(cocktails) {
-    const listDiv = document.getElementById("cocktailList");
-    listDiv.innerHTML = "<h2>Available Cocktails</h2>";
-    
-    cocktails.forEach(cocktail => {
-        listDiv.innerHTML += `
-            <div style="border-bottom: 1px solid #ccc; padding: 10px;">
-                <h3>${cocktail.name}</h3>
-                <p><strong>Style:</strong> ${cocktail.style}</p>
-                <p><strong>Last Had:</strong> ${cocktail.lastHad} | <strong>Rating:</strong> ${cocktail.rating}</p>
-                <p><strong>Ingredients:</strong> ${cocktail.ingredients}</p>
-                <p><strong>Instructions:</strong> ${cocktail.instructions}</p>
-                <p><strong>Glassware:</strong> ${cocktail.glassware} | <strong>Garnish:</strong> ${cocktail.garnish}</p>
-                ${cocktail.link ? `<p><a href="${cocktail.link}" target="_blank">Recipe Link</a></p>` : ""}
-                ${cocktail.picture ? `<img src="${cocktail.picture}" alt="${cocktail.name}" style="max-width: 200px;">` : ""}
-            </div>
-        `;
-    });
-}
-
-// Run on page load
-fetchCocktails();
+// Function to
