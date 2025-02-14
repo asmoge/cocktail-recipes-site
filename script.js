@@ -24,6 +24,7 @@ async function fetchCocktails() {
             link: row.c[39]?.v || "",                // Link (if available)
             picture: row.c[40]?.v || ""              // Picture (if available)
         }));
+	console.log("Fetched Cocktails:", cocktails);
 
         displayCocktails(cocktails);
     } catch (error) {
